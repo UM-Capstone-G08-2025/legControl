@@ -110,3 +110,17 @@ class LegMotor(Motor):
                 Motor._setAngle(self, angle)
             if self.flipped:
                 Motor._setAngle(self, -(180 - angle))
+                
+class RotationMotor(Motor):
+    """
+    Represents the motor used to move the entire leg.
+    """
+    def __init__(self, servoDriver, channel:int):
+        Motor.__init__(self, servoDriver, channel,
+            motorMinDuration=ROT_MOTOR_MIN_DUR,
+            motorMaxDuration=ROT_MOTOR_MAX_DUR,
+            motorMinAngle=ROT_MOTOR_MIN_ANGLE,
+            motorMaxAngle=ROT_MOTOR_MAX_ANGLE)
+            
+    def setAngle(self, angle:int, lerp:bool=True) -> None:
+        Motor._setAngle(self, angle)

@@ -9,7 +9,7 @@ of hardware and leg design.
 
 """SOFTWARE LEVEL"""
 #Time for motor to transition between keyframes, in milliseconds
-MOTOR_SPEED = 1000
+MOTOR_SPEED = 3000
 #Number of subframes used to interpolate between keyframes. More frames -> smoother movement.
 MOTOR_SUB_FRAME_COUNT = 16
 
