@@ -2,13 +2,6 @@
 
 This is the submodule for controlling the quadrupedal system in our capstone project.
 
-<b>This module is still a work in progress.</b>
-
-<b>Note</b> the current version of this code is untested. As of now, 
-only motor angles can be set and interpolated between. The next version of this
-code will use inverse kinematics to control the leg, so the motor interpolation aspect of this
-code will be removed.
-
 ## Hardware used
 PCA9685 servo driver board<br>
 12 servo motors, 3 for each leg<br>
@@ -32,10 +25,6 @@ The following library must be installed, this can be done with requirements.txt 
 &emsp; adafruit-circuitpython-servokit<br><br>
 &emsp; I did this by creating a Python virtual environment (Raspberry Pi gives an error otherwise). I followed this Stack Overflow post:<br>
 &emsp; https://stackoverflow.com/questions/75608323/how-do-i-solve-error-externally-managed-environment-every-time-i-use-pip-3
-
-## Nomenclature of leg components and coordinate system
-This is the naming scheme used for each component in the leg design, along with location
-of the coordinate origin, which the end-effector is referenced to.
 
 <br><br>
 Noah Stieler, 2025

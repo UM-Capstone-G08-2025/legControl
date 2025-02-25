@@ -6,7 +6,7 @@ Author - Noah Stieler, 2025
 Provides classes that represent both types of leg motor.
 """
 
-from constants import *
+from .constants import *
 
 from time import time
 
@@ -31,8 +31,11 @@ class Motor:
         self.frame_time = MOTOR_SPEED/MOTOR_SUB_FRAME_COUNT
         self.curSubFrame = 0
 
-        servoDriver.servo[channel].set_pulse_width_range(motorMinDuration, motorMaxDuration)
-        servoDriver.servo[channel].actuation_range = motorMaxAngle - motorMinAngle
+        try:
+            servoDriver.servo[channel].set_pulse_width_range(motorMinDuration, motorMaxDuration)
+            servoDriver.servo[channel].actuation_range = motorMaxAngle - motorMinAngle
+        except:
+            pass
 
     def _setAngle(self, angle:int) -> None:
         """
@@ -48,34 +51,10 @@ class Motor:
             print("ERROR: motor on channel " + str(self.channel) + " tried moving out of bounds.")
             print("angle = " + str(angle))
             quit()
-
-        #TODO this line was cutoff in the picture I took of the code I lost on my Raspberry Pi.
-        self.servoDriver.servo[self.channel].angle = self.motorMaxAngle + angle
-
-    def _setAngleLerp(self, angle:int) -> None:
-        """
-        Interpolates from the motor's current angle to the parameter angle.
-        """ 
-        if (angle == self.currentAngle):
-            return
-        
-        self.moveStartTime = time()*1000#Convert to milliseconds
-        self.initialAngle = self.currentAngle
-        self.targetAngle = angle
-        self.curSubFrame = 0
-
-    def update(self) -> None:
-        curTime = time()*1000 #Convert to milliseconds
-        if (curTime > self.moveStartTime + self.curSubFrame*self.frame_time
-            and self.currentAngle != self.targetAngle):
-            
-            #TODO this line was cutoff in the picture I took of the code I lost on my Raspberry Pi.
-            self.currentAngle = self.initialAngle + (self.targetAngle - self.initialAngle)*(self.curSubFrame)
-            self._setAngle(self.currentAngle)
-
-            self.curSubFrame = (self.curSubFrame+1)%(MOTOR_SUB_FRAME_COUNT+1)
-            if self.curSubFrame == 0: #Motor is now at target angle
-                    self.currentAngle = self.targetAngle
+        try:
+            self.servoDriver.servo[self.channel].angle = self.motorMaxAngle + angle
+        except:
+            pass
 
 class LegMotor(Motor):
     """
@@ -90,26 +69,17 @@ class LegMotor(Motor):
         
         self.flipped = flipped
     
-    def setAngle(self, angle:int, lerp:bool=True) -> None:
+    def setAngle(self, angle:int) -> None:
         """
-        lerp=False - Interpolation from current to new angle is off.
-        lerp=True  - Interpoalation from current to new angle is on. This is for smooth movement.
-
         Each leg has two motors, that when looked at from the front, will have one motor
         pointing in the positive x direction, and another motor pointing in the negative x direction.
         The motor in the negative x direction will vary from 90 to 270 degrees, so we have to accound
         for this with the flipped parameter.
         """
-        if lerp:
-            if not self.flipped:
-                Motor._setAngleLerp(self, angle)
-            if self.flipped:
-                Motor._setAngleLerp(self, -(180 - angle))
-        else:
-            if not self.flipped:
-                Motor._setAngle(self, angle)
-            if self.flipped:
-                Motor._setAngle(self, -(180 - angle))
+        if not self.flipped:
+            Motor._setAngle(self, angle)
+        if self.flipped:
+            Motor._setAngle(self, -(180 - angle))
                 
 class RotationMotor(Motor):
     """
@@ -122,5 +92,5 @@ class RotationMotor(Motor):
             motorMinAngle=ROT_MOTOR_MIN_ANGLE,
             motorMaxAngle=ROT_MOTOR_MAX_ANGLE)
             
-    def setAngle(self, angle:int, lerp:bool=True) -> None:
+    def setAngle(self, angle:int) -> None:
         Motor._setAngle(self, angle)

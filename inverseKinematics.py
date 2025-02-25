@@ -5,7 +5,7 @@ Author - Noah Stieler, 2025
 
 Handles the inverse kinematic model of the leg.
 """
-from constants import *
+from .constants import *
 
 import math
 

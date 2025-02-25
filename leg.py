@@ -4,8 +4,8 @@ G08 - ServoSentry
 Author - Noah Stieler, 2025
 """
 
-from motor import LegMotor, RotationMotor
-from inverseKinematics import *
+from .motor import LegMotor, RotationMotor
+from .inverseKinematics import *
 
 from time import time
 from math import sin
@@ -85,14 +85,15 @@ class Leg:
 		lowerMotorAngle, upperMotorAngle = inverseKinematics(x, y)
 		
 		if not self.isMirrored:
-			self.lowerMotor.setAngle(lowerMotorAngle, lerp=False)
-			self.upperMotor.setAngle(upperMotorAngle, lerp=False)
+			self.lowerMotor.setAngle(lowerMotorAngle)
+			self.upperMotor.setAngle(upperMotorAngle)
 		else:
-			self.lowerMotor.setAngle(180 + (-1*lowerMotorAngle) + 30, lerp=False)
-			self.upperMotor.setAngle(-(upperMotorAngle - 180) + 10, lerp=False)
+			#Extra angles added to try and correct observed error.
+			self.lowerMotor.setAngle(180 + (-1*lowerMotorAngle) + 30)
+			self.upperMotor.setAngle(-(upperMotorAngle - 180) + 10)
 		
 	def setRotationMotorAngle(self, angle:int) -> None:
-		self.rotationMotor.setAngle(angle, lerp=False)
+		self.rotationMotor.setAngle(angle)
 			
 	def isAnimating(self) -> bool:
 		if self.curFrame != -1:
@@ -112,11 +113,11 @@ class Leg:
 				lowerMotorAngle, upperMotorAngle = self._animLiftMoveForward(self.curFrame*self.timeStep/self.animLength)
 			
 			if not self.isMirrored:
-				self.lowerMotor.setAngle(lowerMotorAngle, lerp=False)
-				self.upperMotor.setAngle(upperMotorAngle, lerp=False)
+				self.lowerMotor.setAngle(lowerMotorAngle)
+				self.upperMotor.setAngle(upperMotorAngle)
 			else:
-				self.lowerMotor.setAngle(180 + (-1*lowerMotorAngle) + 30, lerp=False)
-				self.upperMotor.setAngle(-(upperMotorAngle - 180) + 10, lerp=False)
+				self.lowerMotor.setAngle(180 + (-1*lowerMotorAngle) + 30)
+				self.upperMotor.setAngle(-(upperMotorAngle - 180) + 10)
 			
 			self.curFrame += 1
 			#Stop animating
