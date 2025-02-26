@@ -8,8 +8,6 @@ Provides classes that represent both types of leg motor.
 
 from .constants import *
 
-from time import time
-
 class Motor:
     """
     Base class for all motor objects. Not meant to be instantiated.
@@ -24,14 +22,7 @@ class Motor:
         self.motorMinAngle = motorMinAngle
         self.motorMaxAngle = motorMaxAngle
 
-        self.currentAngle = 0
-        self.initialAngle = 0
-        self.targetAngle = 0
-        self.moveStartTime = 0 #When starting a movement, the initial time is stored here.
-        self.frame_time = MOTOR_SPEED/MOTOR_SUB_FRAME_COUNT
-        self.curSubFrame = 0
-
-        try:
+        try:#OSError is thrown when driver is disconnected
             servoDriver.servo[channel].set_pulse_width_range(motorMinDuration, motorMaxDuration)
             servoDriver.servo[channel].actuation_range = motorMaxAngle - motorMinAngle
         except:
@@ -51,7 +42,7 @@ class Motor:
             print("ERROR: motor on channel " + str(self.channel) + " tried moving out of bounds.")
             print("angle = " + str(angle))
             quit()
-        try:
+        try:#OSError is thrown when driver is disconnected
             self.servoDriver.servo[self.channel].angle = self.motorMaxAngle + angle
         except:
             pass

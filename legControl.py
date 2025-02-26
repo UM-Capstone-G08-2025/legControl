@@ -4,7 +4,6 @@ G08 - ServoSentry
 Author - Noah Stieler, 2025
 """
 
-from .motor import LegMotor
 from .constants import *
 from .inverseKinematics import *
 from .leg import Leg

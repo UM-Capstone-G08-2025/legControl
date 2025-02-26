@@ -7,12 +7,6 @@ Provides all the constants which are determined by choice
 of hardware and leg design.
 """
 
-"""SOFTWARE LEVEL"""
-#Time for motor to transition between keyframes, in milliseconds
-MOTOR_SPEED = 3000
-#Number of subframes used to interpolate between keyframes. More frames -> smoother movement.
-MOTOR_SUB_FRAME_COUNT = 16
-
 """SERVO DRIVER"""
 #The following constants are set by the hardware used
 PCA9685_CHANNEL_COUNT = 16

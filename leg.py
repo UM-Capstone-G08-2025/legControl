@@ -11,6 +11,9 @@ from time import time
 from math import sin
 
 class Leg:
+	"""
+	Handles the 3 motors comprising a leg, and the animation patterns.
+	"""
 	def __init__(self, servoDriver, lowerMotorChannel:int, upperMotorChannel:int,
 		rotationMotorChannel:int, isMirrored:bool = False):
 			
@@ -42,8 +45,8 @@ class Leg:
 	"""
 	These functions specify the position of the end-effector as a function of time.
 	
-	foward
-	pull back
+	_animMoveForward
+	_animPullBack
 	"""
 	def _animPullBack(self, t) -> list[float, float]:
 		#Determined experimentally to produce motion at constant y value

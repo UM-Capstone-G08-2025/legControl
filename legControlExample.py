@@ -10,7 +10,7 @@ Run: python -m legControl.legControlExample.py
 Some examples of how to use legControl.
 """
 
-from time import time, sleep
+from time import sleep
 
 from .legControl import LegControl
 
